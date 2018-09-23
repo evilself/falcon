@@ -39,9 +39,9 @@ function sendScorer() {
 
 function updateScorer(team, scorer, minute) {
     if(team && team == 'ARSENAL') {
-        $("#scorers").append("<tr><td class='pull-left'>" + scorer + " - " + minute + "\'</td><td></td></tr>");
+        $("#scorers").append("<tr><td class='pull-right'>" + scorer + " - " + minute + "\'</td><td></td></tr>");
     } else {
-        $("#scorers").append("<tr><td></td><td class='pull-right'>" + minute + "\' - " + scorer + "</td></tr>");
+        $("#scorers").append("<tr><td></td><td class='pull-left'>" + minute + "\' - " + scorer + "</td></tr>");
     }
 }
 
