@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Falcon.io Demo</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6 hidden">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="connect">WebSocket connection:</label>
+                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
+                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-9">
+            <table id="result" class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="text-center">Arsenal</th>
+                    <th class="text-center">Manchester United</th>
+                </tr>
+                </thead>
+                <tbody id="scorers">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="team">Which team?</label>
+                    <select id="team" class="form-control" placeholder="Which?">
+                        <option value="ARSENAL">Arsenal</option>
+                        <option value="MANCHESTERUTD">Manchester Utd</option>
+                    </select>
+                    <label for="scorer">Who scored?</label>
+                    <input type="text" id="scorer" class="form-control" placeholder="Who?">
+                    <label for="minute">Which minute?</label>
+                    <input type="number" id="minute" class="form-control" placeholder="When?">
+                </div>
+                <hr />
+                <button id="send" class="btn btn-small btn-primary" type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
