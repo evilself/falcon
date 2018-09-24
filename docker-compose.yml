@@ -8,4 +8,9 @@ services:
   rest:
       build: ./rest
       ports:
-             - "8081:8081"
+           - "8080:8081"
+
+  persister:
+      build: ./persister
+      ports:
+           - "8080:8082"

@@ -2,3 +2,4 @@ rootProject.name = 'demo'
 
 include 'fe'
 include 'rest'
+include 'persister'
