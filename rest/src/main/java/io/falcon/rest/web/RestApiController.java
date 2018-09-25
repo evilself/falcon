@@ -58,11 +58,13 @@ public class RestApiController {
         return null;
     }
 
+    @CrossOrigin("http://localhost:8080")
     @GetMapping(value = "/scores", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Score> getAll() {
         return this.scoreRepository.findAll();
     }
 
+    @CrossOrigin("http://localhost:8080")
     @PostMapping(value = "/scores", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Score saveScore(@RequestBody @Valid Score score) {
         Score saved = this.scoreRepository.save(score);

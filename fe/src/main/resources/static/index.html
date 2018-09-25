@@ -54,9 +54,26 @@
                     <input type="number" id="minute" class="form-control" placeholder="When?">
                 </div>
                 <hr />
-                <button id="send" class="btn btn-small btn-primary" type="submit">Update</button>
+                <button id="send" class="btn btn-small btn-primary" type="submit">Update (via WebSocket)</button>
+                <hr />
+                <button id="sendRest" class="btn btn-small btn-info" type="submit">Update (via REST)</button>
             </form>
         </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <table id="restResult" class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="text-center">DB entries</th>
+                </tr>
+                </thead>
+                <tbody id="dbEntries">
+                </tbody>
+            </table>
+        </div>
+        <button id="getScores" class="btn btn-small btn-info">Get entries (via REST)</button>
     </div>
 </div>
 </body>
