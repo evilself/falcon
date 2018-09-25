@@ -6,6 +6,7 @@ services:
            - "8080:8080"
     environment:
       - spring.kafka.bootstrap-servers=kafka:9092
+      - kafka.persister.topic=ToBePersisted
       - spring.data.mongodb.database=messagedb
       - spring.data.mongodb.host=mongodb
       - spring.data.mongodb.port=27017
@@ -23,9 +24,10 @@ services:
   rest:
       build: ./rest
       ports:
-           - "8081:8080"
+           - "8081:8081"
       environment:
         - spring.kafka.bootstrap-servers=kafka:9092
+        - kafka.persister.topic=ToBePersisted
         - spring.data.mongodb.database=messagedb
         - spring.data.mongodb.host=mongodb
         - spring.data.mongodb.port=27017
@@ -43,7 +45,7 @@ services:
   persister:
       build: ./persister
       ports:
-           - "8082:8080"
+           - "8082:8082"
       environment:
         - spring.kafka.bootstrap-servers=kafka:9092
         - spring.data.mongodb.database=messagedb
@@ -74,7 +76,7 @@ services:
         - KAFKA_ADVERTISED_HOST_NAME=kafka
         - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
         - KAFKA_ADVERTISED_PORT=9092
-        - KAFKA_CREATE_TOPICS=Messages:1:3,Messages2:1:3
+        - KAFKA_CREATE_TOPICS=ToBePersisted:1:1,toBeViewed:1:1
   redis:
       image: redis
       command: [ "redis-server", "--protected-mode", "no" ]

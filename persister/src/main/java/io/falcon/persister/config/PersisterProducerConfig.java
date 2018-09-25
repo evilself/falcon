@@ -1,6 +1,7 @@
-package io.falcon.fe.config;
+package io.falcon.persister.config;
 
-import io.falcon.fe.model.Score;
+
+import io.falcon.persister.model.Score;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,11 +17,11 @@ import java.util.Map;
 
 /**
  * @since 25.09.2018
- * WebSocket Producer config - Payload is serialized as JSON
+ * Persister Producer config - Payload is serialized as JSON and sent to other servies, listening for persisted entity
  *
  */
 @Configuration
-public class WebsocketProducer {
+public class PersisterProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;

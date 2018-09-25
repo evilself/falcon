@@ -1,5 +1,6 @@
 package io.falcon.rest.config;
 
+import io.falcon.rest.model.Score;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,7 @@ public class RestProducer {
     private String kafkaBootstrapServers;
 
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, Score> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -35,7 +36,7 @@ public class RestProducer {
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate() {
+    public KafkaTemplate<String, Score> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

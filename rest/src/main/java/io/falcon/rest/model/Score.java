@@ -1,9 +1,7 @@
 package io.falcon.rest.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -12,6 +10,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 public class Score implements Serializable {
     private String id;
 
@@ -31,6 +31,6 @@ public class Score implements Serializable {
     }
 
     public enum Team {
-        ARSENAL, MANCHESTERUTD
+        @JsonProperty("ARSENAL") ARSENAL, @JsonProperty("MANCHESTERUTD") MANCHESTERUTD
     }
 }

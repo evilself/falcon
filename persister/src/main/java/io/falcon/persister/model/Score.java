@@ -1,9 +1,9 @@
 package io.falcon.persister.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -12,7 +12,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@Document
+@ToString
 public class Score implements Serializable {
+    @Id
     private String id;
 
     @NotNull
@@ -31,6 +35,6 @@ public class Score implements Serializable {
     }
 
     public enum Team {
-        ARSENAL, MANCHESTERUTD
+        @JsonProperty("ARSENAL") ARSENAL, @JsonProperty("MANCHESTERUTD") MANCHESTERUTD
     }
 }

@@ -1,17 +1,22 @@
 package io.falcon.fe.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/**
+ * @since 25.09.2018
+ * Score - Keeps track of scorer, team and minute - our Payload
+ *
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Score implements Serializable {
     private String id;
 
@@ -31,6 +36,6 @@ public class Score implements Serializable {
     }
 
     public enum Team {
-        ARSENAL, MANCHESTERUTD
+        @JsonProperty("ARSENAL") ARSENAL, @JsonProperty("MANCHESTERUTD") MANCHESTERUTD
     }
 }

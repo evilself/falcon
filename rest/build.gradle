@@ -33,4 +33,5 @@ dependencies {
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+    testCompile group: 'org.springframework.kafka', name: 'spring-kafka-test', version: '2.1.10.RELEASE'
 }

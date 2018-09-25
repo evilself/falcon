@@ -1,6 +1,8 @@
 package io.falcon.rest.web;
 
 import io.falcon.rest.model.Score;
+import io.falcon.rest.persistence.ScoreRepository;
+import io.falcon.rest.service.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
@@ -8,10 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.validation.Valid;
@@ -20,11 +19,14 @@ import java.util.List;
 @RestController
 public class RestApiController {
 
+    @Autowired
+    private ProducerService producerService;
+
 //    @Autowired
 //    private MessageRepository messageRepository;
-//
-//    @Autowired
-//    private MessageMongoRepository messageMongoRepository;
+
+    @Autowired
+    private ScoreRepository scoreRepository;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -56,18 +58,18 @@ public class RestApiController {
         return null;
     }
 
-    @GetMapping(value = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Score> listMessages() {
-        return null;
-        //this.messageMongoRepository.findAll();
+    @GetMapping(value = "/scores", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Score> getAll() {
+        return this.scoreRepository.findAll();
     }
 
-    @PostMapping(value = "/messages", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @SendTo("/topic/messages")
-    public Score listMessages(@RequestBody @Valid Score message) {
-        Score message1 = null; //this.messageMongoRepository.save(message);
+    @PostMapping(value = "/scores", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Score saveScore(@RequestBody @Valid Score score) {
+        Score saved = this.scoreRepository.save(score);
+        //Throw it for the Kafka Listeners
+        this.producerService.send(saved);
         //socketTemplate.convertAndSend("/topic/messages", message1);
-        return message1;
+        return saved;
     }
 
 
