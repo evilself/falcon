@@ -23,7 +23,7 @@ public class HomeController {
     private ProducerService producerService;
 
     @MessageMapping("/scorer")
-    @SendTo("/topic/scorers")
+    //@SendTo("/topic/scorers")
     public void updateScore(@Valid Score score) throws Exception {
         log.info("Sending to Kafka topic...");
         this.producerService.send(score);

@@ -2,6 +2,7 @@ package io.falcon.fe.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.falcon.fe.model.Score;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @since 24.09.2018
@@ -29,6 +31,9 @@ public class DefaultProducerService implements ProducerService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Getter
+    private CountDownLatch latch = new CountDownLatch(1);
 
     @Autowired
     private SimpMessagingTemplate socketTemplate;
@@ -52,6 +57,7 @@ public class DefaultProducerService implements ProducerService {
         }
         if(score != null) {
             socketTemplate.convertAndSend("/topic/scorers", score);
+            latch.countDown();
         }
     }
 }
