@@ -1,18 +1,17 @@
 package io.falcon.fe.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.falcon.fe.config.KafkaConfigurationProperties;
 import io.falcon.fe.model.Score;
-import lombok.Getter;
+import io.falcon.fe.util.SocketSender;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -21,43 +20,32 @@ import java.util.concurrent.CountDownLatch;
  *
  */
 @Service
+@Slf4j
+@EnableConfigurationProperties(KafkaConfigurationProperties.class)
 public class DefaultProducerService implements ProducerService {
 
-    @Value("${kafka.persister.topic}")
-    private String persisterTopic;
+    @Autowired
+    private KafkaConfigurationProperties kafkaConfigurationProperties;
 
     @Autowired
     private KafkaTemplate<String, Score> sender;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Getter
-    private CountDownLatch latch = new CountDownLatch(1);
-
-    @Autowired
-    private SimpMessagingTemplate socketTemplate;
+    private SocketSender socketSender;
 
     @Override
     public void send(Score score) {
-        this.sender.send(persisterTopic, score);
+        this.sender.send(kafkaConfigurationProperties.getPersisterTopic(), score);
     }
 
-    @KafkaListener(topics = "toBeViewed", groupId = "group2")
-    public void listen(String payload, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-        System.out.println("Received persisted score in FE:" + payload + " topic:"+topic);
-        Score score = null;
-        try {
-            score = objectMapper.readValue(payload, Score.class);
-        }
-        catch (IOException e) {
-            System.out.println("Exception occured in ");
-            e.printStackTrace();
+    @Override
+    public CountDownLatch getLatch() {
+        return this.socketSender.getLatch();
+    }
 
-        }
-        if(score != null) {
-            socketTemplate.convertAndSend("/topic/scorers", score);
-            latch.countDown();
-        }
+    @KafkaListener(topics = "#{kafkaConfigurationProperties.getViewerTopic()}", groupId = "#{kafkaConfigurationProperties.getGroupId()}")
+    public void listen(String payload, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+        log.info("Received payload:{} for topic: {}",payload, topic);
+        socketSender.send(kafkaConfigurationProperties.getTopics(), payload);
     }
 }

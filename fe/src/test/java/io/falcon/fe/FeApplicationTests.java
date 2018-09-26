@@ -1,16 +1,18 @@
 package io.falcon.fe;
 
-import io.falcon.fe.config.FeTestConfig;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.kafka.test.rule.KafkaEmbedded;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = FeTestConfig.class)
 public class FeApplicationTests {
-	@Test
+    @ClassRule
+    public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, "ToBeViewed","ToBePersisted");
+
+    @Test
 	public void contextLoads() { }
 }

@@ -6,7 +6,19 @@ services:
            - "8080:8080"
     environment:
       - spring.kafka.bootstrap-servers=kafka:9092
-      - kafka.persister.topic=ToBePersisted
+      - websocket_stomp_endpoint=/websocket
+      - websocket_broker=/topic
+      - websocket_app_destination_prefix=/app
+      - PERSISTER_TOPIC=ToBePersisted
+      - VIEWER_TOPIC=ToBeViewed
+      - SCORE_TOPICS=/topic/scorers
+      - GROUP_ID_CONFIG=group2
+      - ENABLE_AUTO_COMMIT_CONFIG=true
+      - AUTO_COMMIT_INTERVAL_MS_CONFIG=100
+      - SESSION_TIMEOUT_MS_CONFIG=15000
+      - AUTO_OFFSET_RESET_CONFIG=earliest
+      - CONCURRENCY=15
+      - POLL_TIMEOUT=3000
       - spring.data.mongodb.database=messagedb
       - spring.data.mongodb.host=mongodb
       - spring.data.mongodb.port=27017
@@ -76,7 +88,7 @@ services:
         - KAFKA_ADVERTISED_HOST_NAME=kafka
         - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
         - KAFKA_ADVERTISED_PORT=9092
-        - KAFKA_CREATE_TOPICS=ToBePersisted:1:1,toBeViewed:1:1
+        - KAFKA_CREATE_TOPICS=ToBePersisted:1:1,ToBeViewed:1:1
   redis:
       image: redis
       command: [ "redis-server", "--protected-mode", "no" ]

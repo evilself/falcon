@@ -4,15 +4,13 @@ import io.falcon.fe.model.Score;
 import io.falcon.fe.service.ProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
 
 /**
- * WebSocket Controller
+ * WebSocket Controller - Receives Scorers from the FE and submits to Kafka broker for persistance/further handling
  *
  */
 @Controller
@@ -23,9 +21,8 @@ public class HomeController {
     private ProducerService producerService;
 
     @MessageMapping("/scorer")
-    //@SendTo("/topic/scorers")
-    public void updateScore(@Valid Score score) throws Exception {
-        log.info("Sending to Kafka topic...");
+    public void updateScore(@Valid Score score) {
+        log.info("Received message... sending to Kafka topic...");
         this.producerService.send(score);
     }
 }
