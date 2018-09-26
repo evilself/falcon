@@ -20,6 +20,7 @@ import java.util.Map;
  * WebSocket Producer config - Payload is serialized as JSON
  *
  */
+@SuppressWarnings("ALL")
 @Configuration
 @EnableConfigurationProperties(KafkaConfigurationProperties.class)
 public class WebSocketProducerConfig {

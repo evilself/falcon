@@ -9,6 +9,11 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 
+/**
+ * @since 26.09.2018
+ * Score representation in rest service
+ *
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

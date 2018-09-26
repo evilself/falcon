@@ -10,6 +10,11 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
+/**
+ * @since 26.09.2018
+ * Kafka Listener - saves messages in MongoDB
+ *
+ */
 @Component
 @Slf4j
 public class PersisterConsumer {

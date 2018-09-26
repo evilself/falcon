@@ -32,6 +32,11 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 
+/**
+ * @since 26.09.2018
+ * WebSocket test
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FeWebSocketTest {
@@ -61,7 +66,7 @@ public class FeWebSocketTest {
 
     @Test
     public void stompTest() throws Exception {
-        Score        message = new Score(Score.Team.ARSENAL, "Henry", 1);
+        Score message = new Score(Score.Team.ARSENAL, "Henry", 1);
         messagingTemplate.convertAndSend(SUBSCRIPTION_TOPIC, message);
         Score response = receivedMessages.poll(5, SECONDS);
         Assert.assertEquals(message, response);

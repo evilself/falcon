@@ -26,27 +26,29 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.hamcrest.Matchers.*;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.activation.MimeType;
 import javax.servlet.ServletContext;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+/**
+ * @since 26.09.2018
+ * REST endpoints test
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-@ContextConfiguration(classes = {RestApplication.class, RestProducerConfig.class, RestApplicationTests.TestConfig.class})
+@ContextConfiguration(classes = { RestApplication.class, RestProducerConfig.class, RestApplicationTests.TestConfig.class })
 public class RestApplicationTests {
     @ClassRule
     public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, "ToBeViewed", "ToBePersisted");
@@ -61,17 +63,17 @@ public class RestApplicationTests {
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
+                                      .build();
         scoreRepository.deleteAll();
     }
 
-	@Test
-	public void contextLoads() { }
+    @Test
+    public void contextLoads() { }
 
     @Test
     public void webAppContextIsValid() {
         ServletContext servletContext = wac.getServletContext();
-
         Assert.assertNotNull(servletContext);
         Assert.assertTrue(servletContext instanceof MockServletContext);
         Assert.assertNotNull(wac.getBean("restApiController"));
@@ -80,7 +82,8 @@ public class RestApplicationTests {
     @Test
     public void getAllScores() throws Exception {
         scoreRepository.save(new Score(Score.Team.ARSENAL, "Henry", 12));
-        this.mockMvc.perform(get("/scores")).andDo(print())
+        this.mockMvc.perform(get("/scores"))
+                    .andDo(print())
                     .andExpect(status().is(HttpStatus.OK.value()))
                     .andExpect(jsonPath("$[0].team", is("ARSENAL")))
                     .andExpect(jsonPath("$[0].scorer", is("Henry")))
@@ -90,11 +93,17 @@ public class RestApplicationTests {
     @Test
     public void postMeScore() throws Exception {
         this.mockMvc.perform(post("/scores").contentType(MediaType.APPLICATION_JSON_VALUE)
-                            .content("{\"team\":\"MANCHESTERUTD\",\"scorer\":\"Keane\",\"minute\":\"78\"}\u0000")
-                            .accept(MediaType.APPLICATION_JSON_VALUE)).andDo(print()).andReturn();
+                                            .content("{\"team\":\"MANCHESTERUTD\",\"scorer\":\"Keane\",\"minute\":\"78\"}\u0000")
+                                            .accept(MediaType.APPLICATION_JSON_VALUE))
+                    .andDo(print())
+                    .andReturn();
 
-        assert this.scoreRepository.findAll().size() > 0;
-        assert this.scoreRepository.findAll().get(0).getScorer().equalsIgnoreCase("Keane");
+        assert this.scoreRepository.findAll()
+                                   .size() > 0;
+        assert this.scoreRepository.findAll()
+                                   .get(0)
+                                   .getScorer()
+                                   .equalsIgnoreCase("Keane");
     }
 
     @TestConfiguration

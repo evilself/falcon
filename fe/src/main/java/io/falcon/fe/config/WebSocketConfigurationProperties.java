@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+/**
+ * @since 26.09.2018
+ * General WebSocket Config - STOMP
+ *
+ */
 @Configuration
 @ConfigurationProperties(prefix = "websocket")
 @Getter

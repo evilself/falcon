@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * @since 26.09.2018
+ * REST API controller endpoints
+ *
+ */
 @RestController
 public class RestApiController {
 

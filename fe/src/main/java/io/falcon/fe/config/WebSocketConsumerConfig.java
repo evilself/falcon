@@ -23,6 +23,7 @@ import java.util.Map;
  * WebSocket Kafka Consumer config
  *
  */
+@SuppressWarnings("ALL")
 @EnableKafka
 @Configuration
 @EnableConfigurationProperties(KafkaConfigurationProperties.class)

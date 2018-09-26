@@ -5,9 +5,16 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
+/**
+ * @since 26.09.2018
+ * Score model - Persister representation
+ *
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,9 +30,11 @@ public class Score implements Serializable {
     private Team team;
 
     @NotNull
+    @NotEmpty
     private String scorer;
 
     @NotNull
+    @Positive
     private int minute;
 
     public Score(Team team, String scorer, int minute) {
