@@ -3,7 +3,9 @@ package io.falcon.fe.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
 /**
@@ -24,10 +26,12 @@ public class Score implements Serializable {
     private Team team;
 
     @NotNull
+    @NotEmpty
     private String scorer;
 
     @NotNull
-    private int minute;
+    @Positive
+    private Integer minute;
 
     public Score(Team team, String scorer, int minute) {
         this.team = team;

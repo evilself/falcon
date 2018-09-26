@@ -34,25 +34,10 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PersisterApplicationTests {
-
     @ClassRule
-    public static KafkaEmbedded embeddedKafka =
-            new KafkaEmbedded(1, true, "toBeViewed", "toBePersisted");
-
-    @Autowired
-    ScoreRepository scoreRepository;
+    public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, "toBeViewed", "toBePersisted");
 
 	@Test
-	public void contextLoads() {
-	}
+	public void contextLoads() { }
 
-    @Autowired
-    private KafkaTemplate<String, Score> sender;
-
-
-    @Test
-    public void testReceiveToBePersiste() throws Exception {
-        sender.send("toBePersisted", new Score(Score.Team.ARSENAL, "Henry", 1));
-        scoreRepository.findAll();
-    }
 }
