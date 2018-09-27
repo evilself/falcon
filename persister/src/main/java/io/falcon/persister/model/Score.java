@@ -23,7 +23,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Document
 @ToString
-@RedisHash("Score")
 public class Score implements Serializable {
     @Id
     private String id;

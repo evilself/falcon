@@ -30,12 +30,9 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.kafka:spring-kafka')
     compile group: 'com.google.guava', name: 'guava', version: '26.0-jre'
-    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
 	compileOnly('org.projectlombok:lombok')
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile group: 'org.springframework.kafka', name: 'spring-kafka-test', version: '2.1.10.RELEASE'
     testCompile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.1.1'
-    testCompile group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
-
 }
