@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Document
 @ToString
+@RedisHash("Score")
 public class Score implements Serializable {
     @Id
     private String id;

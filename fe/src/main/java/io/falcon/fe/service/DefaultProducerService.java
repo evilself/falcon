@@ -33,6 +33,9 @@ public class DefaultProducerService implements ProducerService {
     @Autowired
     private SocketSender socketSender;
 
+    @Autowired
+    private MessagePublisher redisCachePublisher;
+
     @Override
     public void send(Score score) {
         this.sender.send(kafkaConfigurationProperties.getPersisterTopic(), score);
@@ -47,5 +50,6 @@ public class DefaultProducerService implements ProducerService {
     public void listen(String payload, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         log.info("Received payload:{} for topic: {}",payload, topic);
         socketSender.send(kafkaConfigurationProperties.getTopics(), payload);
+        redisCachePublisher.publish(payload);
     }
 }
