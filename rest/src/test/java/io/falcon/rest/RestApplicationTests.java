@@ -5,10 +5,7 @@ import io.falcon.rest.model.Score;
 import io.falcon.rest.persistence.ScoreRepository;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +26,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,10 +47,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-@ContextConfiguration(classes = { RestApplication.class, RestProducerConfig.class, RestApplicationTests.TestConfig.class })
+@ContextConfiguration(classes = { RestApplication.class, RestProducerConfig.class, RestApplicationTests.TestConfig.class})
 public class RestApplicationTests {
     @ClassRule
     public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, "ToBeViewed", "ToBePersisted");
+
+    private redis.embedded.RedisServer redisServer;
 
     @Autowired
     private ScoreRepository scoreRepository;
@@ -65,7 +66,14 @@ public class RestApplicationTests {
     public void setup() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
                                       .build();
+        this.redisServer = new redis.embedded.RedisServer(6379);
+        this.redisServer.start();
         scoreRepository.deleteAll();
+    }
+
+    @After
+    public void cleanup() {
+        this.redisServer.stop();
     }
 
     @Test
@@ -91,7 +99,7 @@ public class RestApplicationTests {
     }
 
     @Test
-    public void postMeScore() throws Exception {
+    public void postScore() throws Exception {
         this.mockMvc.perform(post("/scores").contentType(MediaType.APPLICATION_JSON_VALUE)
                                             .content("{\"team\":\"MANCHESTERUTD\",\"scorer\":\"Keane\",\"minute\":\"78\"}\u0000")
                                             .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -123,4 +131,6 @@ public class RestApplicationTests {
             return new KafkaTemplate<>(producerFactory());
         }
     }
+
+
 }

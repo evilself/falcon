@@ -78,5 +78,4 @@ public class PersisterApplicationTests {
             this.redisServer.stop();
         }
     }
-
 }

@@ -36,7 +36,6 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile group: 'org.springframework.kafka', name: 'spring-kafka-test', version: '2.1.10.RELEASE'
     testCompile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.1.1'
-    // https://mvnrepository.com/artifact/it.ozimov/embedded-redis
     testCompile group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
 }

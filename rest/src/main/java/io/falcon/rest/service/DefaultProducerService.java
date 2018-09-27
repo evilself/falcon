@@ -28,9 +28,14 @@ public class DefaultProducerService implements ProducerService {
     @Autowired
     private ScoreRepository scoreRepository;
 
+    @Autowired
+    private MessagePublisher redisCachePublisher;
+
     @Override
     public Score save(Score score) {
+        redisCachePublisher.publish(score.toString());
         return this.scoreRepository.save(score);
+
     }
 
     @Override
